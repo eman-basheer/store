@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FrontController;
 use App\Http\Controllers\productController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,5 +46,18 @@ route::get('categories/delete/(id)', [CategoryController::class, 'delete']);
 route::get('categories/update/(id)', [CategoryController::class, 'update']);
 
 
-//front route
-Route::get('/', [FrontController::class ,'index']);
+
+
+
+
+Route::get('/orders', [OrderController::class, 'index']);
+Route::get('/orders/create', [OrderController::class, 'create']);
+Route::get('/orders/edit/{id}', [OrderController::class, 'edit']);
+Route::post('/orders/store', [OrderController::class, 'store']);
+Route::post('/orders/update/{id}', [OrderController::class, 'update']);
+Route::get('/orders/destroy/{id}', [OrderController::class, 'destroy']);
+Route::post('/orders/{productId}/buy', [OrderController::class, 'buy']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

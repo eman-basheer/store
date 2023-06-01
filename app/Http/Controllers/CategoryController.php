@@ -1,21 +1,32 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class CategoryController extends Controller
 {
-    //
-    public function index(){
-        $categories=category::all();
-        return view('admin.categories.index',compact('categories'));
+    public function __construct()
+    {
+        $this->middleware('auth');
     }
+
+
+
     public function create()
     {
-        $categories = Category::all();
-        return view('admin.categories.create', compact('categories'));
+        return view("admin.categories.create");
+    }
+
+
+
+    public function index(){
+       //$categories=category::all();
+       $categories = auth()->user()->categories()->paginate();
+    return view('admin.categories.index',compact('categories'));
+
     }
 
     /**
@@ -30,6 +41,7 @@ class CategoryController extends Controller
         $categories->name = $request->name;
 
         $categories->save();
+        $categories->user_id = Auth::id();
 
         return redirect()->back();
     }
@@ -62,6 +74,7 @@ class CategoryController extends Controller
         $catagory->name = $request->name;
 
         $catagory->save();
+
 
         return redirect('categories');
     }
